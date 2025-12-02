@@ -3,21 +3,31 @@ import random
 pygame.init()
 #Dans largeur d'ecran avec une bordure mettre le dropper a une place random et faire avancer avec y une boule qui tombe depuis le dropper
 X = pygame.image.load("images/X.PNG")
+O = pygame.image.load("images/O.png")
 screen_lenght = 900
 screen_height = 700
 screen = pygame.display.set_mode((screen_lenght,screen_height))
 font = pygame.font.SysFont(None, 20)
 clock = pygame.time.Clock()
 position_x = screen_lenght/2
+y = 30
 
 
 def Dropper():
-    global position_x
+    global position_x , y , x
+    dropper_speed = 2
     key = pygame.key.get_pressed()
     if key[pygame.K_d]:
-        position_x += 4
-    elif key[pygame.K_a]:
-        position_x -= 4
+        position_x += dropper_speed
+    if key[pygame.K_a]:
+        position_x -= dropper_speed
+    if key[pygame.K_SPACE]:
+        y = 31
+        x = position_x
+    if y > 30 and y < screen_height:
+        y += 2
+        screen.blit(O,(x,y))
+        
     screen.blit(X,(position_x,30))    
 
 def Fps():
