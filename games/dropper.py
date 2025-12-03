@@ -9,10 +9,8 @@ screen_height = 700
 screen = pygame.display.set_mode((screen_width, screen_height))
 font = pygame.font.SysFont(None, 20)
 clock = pygame.time.Clock()
-
 dropper_x = screen_width / 2
-
-
+dodger_x = screen_width / 2 
 #  CLONE CLASS
 class Ball(pygame.sprite.Sprite):
     def __init__(self, x):
@@ -26,11 +24,8 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.top > screen_height:
             self.kill()  # delete ball when off screen
 
-
 # Sprite Group to store all balls
 balls = pygame.sprite.Group()
-
-
 
 #  DROPPER MOVEMENT
 def Dropper():
@@ -45,6 +40,17 @@ def Dropper():
     dropper_x = max(0, min(dropper_x, screen_width - img_X.get_width()))
     screen.blit(img_X, (dropper_x, 30))
 
+
+# DODGER MOVEMENT
+def Dodger():
+    speed = 3
+    global dodger_x 
+    key = pygame.key.get_pressed()
+    if key[pygame.K_RIGHT]:
+        dodger_x += speed
+    if key[pygame.K_LEFT]:
+        dodger_x -= speed
+    screen.blit(img_X,(dodger_x,400))
 
 #  FPS DISPLAY
 def Fps():
@@ -61,12 +67,13 @@ while playing:
         if event.type == pygame.QUIT:
             playing = False
 
-        # SPACE → create a new falling ball
+        # SPACE create a new falling ball
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             balls.add(Ball(dropper_x))
 
     screen.fill("WHITE")
     Dropper()
+    Dodger()
     balls.update()
     balls.draw(screen)
     Fps()
