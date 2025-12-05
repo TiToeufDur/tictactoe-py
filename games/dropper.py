@@ -35,8 +35,6 @@ class Ball(pygame.sprite.Sprite):
             self.kill()
             dodger_life = max(0, dodger_life - 1)  # only reduce health if it actually hits
             
-            
-
 #  DROPPER MOVEMENT
 def Dropper():
     global dropper_x
@@ -49,7 +47,6 @@ def Dropper():
     # keep dropper on screen
     dropper_x = max(0, min(dropper_x, screen_width - img_X.get_width()))
     screen.blit(img_X, (dropper_x, 30))
-
 
 # DODGER MOVEMENT
 def Dodger():
@@ -78,15 +75,16 @@ def Text_display():
         winner = "Dropper"
         screen.blit(winner_text,(screen_width/2-winner_text.get_width()/2,screen_height/2-winner_text.get_height()/2))
 
-    elif pygame.time.get_ticks() >= winning_time :
+    elif current_time >= winning_time :
         winner = "Dodger"
         screen.blit(winner_text,(screen_width/2-winner_text.get_width()/2,screen_height/2-winner_text.get_height()/2))
 
     elif winner == None:
-        temp_text = pygame.font.Font(None,30).render(f"{round(winning_time / 1000 - pygame.time.get_ticks() / 1000)}",True,"BLACK")
+        temp_text = pygame.font.Font(None,30).render(f"{round(winning_time / 1000 - current_time / 1000)}",True,"BLACK")
         screen.blit(temp_text,(screen_width / 2 - temp_text.get_width()/2, 40))
     else: 
         winner = None
+
 #  MAIN LOOP
 playing = True
 while playing:
@@ -106,7 +104,6 @@ while playing:
     balls.update()
     balls.draw(screen)
     Text_display()
-
     pygame.display.flip()
     clock.tick(60)
 
