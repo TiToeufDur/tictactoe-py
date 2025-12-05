@@ -15,7 +15,8 @@ dodger_x = screen_width / 2
 dodger_life = 10 
 last_shot_time = 0
 shot_cooldown = 500
-
+winner = None
+winning_time = 30000
 
 #  CLONE CLASS
 class Ball(pygame.sprite.Sprite):
@@ -65,16 +66,27 @@ def Dodger():
 
 #  TEXT DISPLAY
 def Text_display():
+    global winner
     fps_text = font.render(f"{round(clock.get_fps(), 2)}", True, "BLACK")
     dodger_life_text = font.render(f"{dodger_life}", True , "GREEN" if dodger_life >= 7 else "ORANGE" if dodger_life > 3 and dodger_life <=6 else "RED" )
-    winner_text = pygame.font.Font(None,60).render("Dropper wins!" , True , "BLACK")
+    winner_text = pygame.font.Font(None,60).render(f"{winner} wins!" , True , "BLACK")
+
     screen.blit(fps_text, (10, 10))
     screen.blit(dodger_life_text, (dodger_x, dodger_rect.y-2))
-    if dodger_life <= 0:
-        screen.blit(winner_text,(screen_width/2-winner_text.get_width()/2,screen_height/2-winner_text.get_height()/2))
-    if pygame.time.get_ticks() >= 20000:
-        print("win")
 
+    if dodger_life <= 0:
+        winner = "Dropper"
+        screen.blit(winner_text,(screen_width/2-winner_text.get_width()/2,screen_height/2-winner_text.get_height()/2))
+
+    elif pygame.time.get_ticks() >= winning_time :
+        winner = "Dodger"
+        screen.blit(winner_text,(screen_width/2-winner_text.get_width()/2,screen_height/2-winner_text.get_height()/2))
+
+    elif winner == None:
+        temp_text = pygame.font.Font(None,30).render(f"{round(winning_time / 1000 - pygame.time.get_ticks() / 1000)}",True,"BLACK")
+        screen.blit(temp_text,(screen_width / 2 - temp_text.get_width()/2, 40))
+    else: 
+        winner = None
 #  MAIN LOOP
 playing = True
 while playing:
